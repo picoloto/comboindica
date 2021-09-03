@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1062597616770",
+    "project_id": "comboindica",
+    "storage_bucket": "comboindica.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062597616770:android:23a70a8c2da8362d44409b",
+        "android_client_info": {
+          "package_name": "br.com.picoloto.comboindica"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1062597616770-p3rj15cv5o96bn6cimei4gj0sapo24gd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmuySwJ0pmxov60AsIQoPF0OHgGX6_uEw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1062597616770-p3rj15cv5o96bn6cimei4gj0sapo24gd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

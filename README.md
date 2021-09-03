@@ -1,6 +1,6 @@
 # comboindica
 
-Um aplicativo com indicação de jogos feitas pelo canal Comboverso Games
+Um aplicativo com indicação de games feitas pelo canal Comboverso Games
 
 ## Getting Started
 

@@ -1,5 +1,5 @@
 name: comboindica
-description: Um aplicativo com indicação de jogos feitas pelo canal Comboverso Games
+description: Um aplicativo com indicação de games feitas pelo canal Comboverso Games
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -28,6 +28,10 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  firebase_core: ^1.6.0
+  cloud_firestore: ^2.5.1
+  google_fonts: ^2.0.0
+  provider: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +55,7 @@ flutter:
   assets:
     - images/logo.png
     - images/control.png
+    - images/LOGO_INDICA.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -1,87 +1,59 @@
-import 'dart:math';
-
+import 'package:comboindica/states/application_state.dart';
+import 'package:comboindica/utils/theme_utils.dart';
+import 'package:comboindica/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'utils/color_utils.dart';
+import 'domain/game.dart';
 
 void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Home(),
-    theme: ThemeData(
-      backgroundColor: BACKGROUND_COLOR,
-      scaffoldBackgroundColor: BACKGROUND_COLOR,
-      canvasColor: BACKGROUND_COLOR,
-      brightness: Brightness.dark,
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ApplicationState(),
+      builder: (context, _) => App(),
     ),
-  ));
+  );
 }
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  var _jogos = [
-    'Albion online',
-    'Apex Legends',
-    'Black Desert Online',
-    'Bless Online',
-    'Brawhalla',
-    'The Crew 2',
-    'Cuphead',
-    'Cyberpunk 2077',
-    'Darksiders',
-    'Destiny 2',
-    'Devil May Cry 5',
-    'Far Cry 5',
-    'Hades',
-    'Monster Hunter: World',
-    'Mortal Kombat 11',
-    'Northgard',
-    'Resident Evil 2',
-    'Resident Evil Village',
-    'Sekiro: Shadows Die Twice',
-    'SpellForce 3',
-    'Tribes of Midgard',
-    'Wolcen: Lords of Mayhem',
-  ];
-
-  var _jogoIndicado = '';
-
-  @override
-  void initState() {
-    _indicarJogo();
-    super.initState();
-  }
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Home(),
+      theme: ThemeUtils.getThemeData(context),
+    );
+  }
+}
+
+List<Game>? _games = [];
+
+class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<ApplicationState>(context);
+
     return Scaffold(
       appBar: _getAppBar(),
-      body: _getBody(),
+      body: _getBody(provider),
     );
   }
 
   AppBar _getAppBar() {
     return AppBar(
-      toolbarHeight: 70,
+      toolbarHeight: 100,
       automaticallyImplyLeading: false,
-      // flexibleSpace: SomeWidget(),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            'images/logo.png',
+            'images/LOGO_INDICA.png',
             fit: BoxFit.contain,
-            height: 62,
-          ),
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('INDICA'),
+            height: 72,
           ),
         ],
       ),
@@ -91,30 +63,50 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Center _getBody() {
+  Center _getBody(ApplicationState provider) {
     return Center(
       child: Container(
-        color: BACKGROUND_COLOR,
         padding: EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // TODO: Lista dos meus jogos
-            Image.asset(
-              'images/control.png',
-              fit: BoxFit.contain,
-              height: 62,
+            Consumer<ApplicationState>(
+              builder: (context, appState, _) {
+                if (appState.randomGame!.image.isNotEmpty) {
+                  return _getImageClip(
+                    Image.network(
+                      appState.randomGame!.image,
+                      fit: BoxFit.cover,
+                      height: 340,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress != null) return CustomLoading();
+                        return child;
+                      },
+                    ),
+                  );
+                } else {
+                  return _getImageClip(
+                    Image.asset(
+                      "images/control.png",
+                      fit: BoxFit.contain,
+                      height: 200,
+                    ),
+                  );
+                }
+              },
             ),
-            Text(
-              _jogoIndicado,
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                fontSize: 25,
-              ),
+            Consumer<ApplicationState>(
+              builder: (context, appState, _) {
+                return Text(
+                  appState.randomGame!.name,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(fontSize: 25, color: Colors.white),
+                );
+              },
             ),
             ElevatedButton(
-              onPressed: _indicarJogo,
+              onPressed: provider.generateRandomGame,
               style: ButtonStyle(
                   padding: MaterialStateProperty.all(EdgeInsets.all(16))),
               child: Text(
@@ -131,11 +123,10 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _indicarJogo() {
-    var random = Random().nextInt(_jogos.length);
-
-    setState(() {
-      _jogoIndicado = _jogos[random];
-    });
+  ClipRRect _getImageClip(Image image) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8.0),
+      child: image,
+    );
   }
 }
